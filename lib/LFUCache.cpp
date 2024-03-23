@@ -75,7 +75,8 @@ void LFUCache::insert(int key, string val) {
 }
 
 string LFUCache::set(int key, string val) {
-  if (this->store.find(key) == this->store.end()) insert(key, val);
+  if (this->store.find(key) == this->store.end() || this->store[key].first != val)
+    insert(key, val);
   else increment(this->store[key].second);
 
   return "OK";

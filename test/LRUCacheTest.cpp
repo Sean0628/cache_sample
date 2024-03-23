@@ -23,6 +23,14 @@ TEST_CASE("It allows to get a value", "[LFUCache::get]") {
   REQUIRE(lru.get(3) == "c");
 };
 
+TEST_CASE("It allows to update a value", "[LFUCache::set]") {
+  LRUCache lru(3);
+
+  lru.set(1, "a");
+  lru.set(1, "b");
+  REQUIRE(lru.get(1) == "b");
+};
+
 TEST_CASE("It deletes the least recently used item", "[LFUCache]") {
   LRUCache lru(3);
 
