@@ -1,11 +1,10 @@
 #pragma once
 
 #include <string>
-#include <optional>
 
 using namespace std;
 
-class LFU {
+class LFUCache {
   private:
     static const int MAX_SIZE = 100;
 
@@ -23,11 +22,11 @@ class LFU {
     void insert(int key, string val);
 
   public:
-    LFU(
+    LFUCache(
         int mx_size = MAX_SIZE,
         int curr_size = 0
         );
-    ~LFU();
+    ~LFUCache();
 
     string get(int key);
     string set(int key, string val);

@@ -1,8 +1,8 @@
-#include "LFU.h"
+#include "LFUCache.h"
 
 using namespace std;
 
-LFU::LFU(
+LFUCache::LFUCache(
     int mx_size,
     int curr_size
     ) {
@@ -12,28 +12,28 @@ LFU::LFU(
   this->store = unordered_map<int, pair<string, int> >();
 }
 
-LFU::~LFU() {
+LFUCache::~LFUCache() {
 }
 
-void LFU::swap(pair<int, int> &a, pair<int, int> &b) {
+void LFUCache::swap(pair<int, int> &a, pair<int, int> &b) {
   pair<int, int> temp = a;
   a = b;
   b = temp;
 }
 
-int LFU::get_parent_idx(int idx) const {
+int LFUCache::get_parent_idx(int idx) const {
   return (idx - 1) / 2;
 }
 
-int LFU::get_left_child_idx(int idx) const {
+int LFUCache::get_left_child_idx(int idx) const {
   return 2 * idx + 1;
 }
 
-int LFU::get_right_child_idx(int idx) const {
+int LFUCache::get_right_child_idx(int idx) const {
   return 2 * idx + 2;
 }
 
-void LFU::heapify(int idx) {
+void LFUCache::heapify(int idx) {
   int left = get_left_child_idx(idx);
   int right = get_right_child_idx(idx);
   int smallest = idx;
@@ -49,12 +49,12 @@ void LFU::heapify(int idx) {
   }
 }
 
-void LFU::increment(int idx) {
+void LFUCache::increment(int idx) {
   this->freq[idx].second++;
   heapify(idx);
 }
 
-void LFU::insert(int key, string val) {
+void LFUCache::insert(int key, string val) {
   if (this->curr_size == this->mx_size) {
     this->store.erase(this->freq[0].first);
     this->freq[0] = this->freq[this->curr_size - 1];
@@ -74,14 +74,14 @@ void LFU::insert(int key, string val) {
   }
 }
 
-string LFU::set(int key, string val) {
+string LFUCache::set(int key, string val) {
   if (this->store.find(key) == this->store.end()) insert(key, val);
   else increment(this->store[key].second);
 
   return "OK";
 }
 
-string LFU::get(int key) {
+string LFUCache::get(int key) {
   if (this->store.find(key) == this->store.end()) return "NULL";
 
   increment(this->store[key].second);
