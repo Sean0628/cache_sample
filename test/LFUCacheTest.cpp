@@ -11,6 +11,14 @@ TEST_CASE("It allows to set a value even after the cache is full", "[LFUCache::s
   REQUIRE(lfu.set(4, "d") == "OK");
 };
 
+TEST_CASE("It allows to update a value", "[LFUCache::set]") {
+  LFUCache lfu(3);
+
+  lfu.set(1, "a");
+  lfu.set(1, "b");
+  REQUIRE(lfu.get(1) == "b");
+};
+
 TEST_CASE("It allows to get a value", "[LFUCache::get]") {
   LFUCache lfu(3);
 
