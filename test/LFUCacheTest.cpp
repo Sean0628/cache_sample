@@ -1,9 +1,9 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
-#include "LFU.cpp"
+#include "LFUCache.cpp"
 
-TEST_CASE("It allows to set a value even after the cache is full", "[LFU::set]") {
-  LFU lfu(3);
+TEST_CASE("It allows to set a value even after the cache is full", "[LFUCache::set]") {
+  LFUCache lfu(3);
 
   REQUIRE(lfu.set(1, "a") == "OK");
   REQUIRE(lfu.set(2, "b") == "OK");
@@ -11,8 +11,8 @@ TEST_CASE("It allows to set a value even after the cache is full", "[LFU::set]")
   REQUIRE(lfu.set(4, "d") == "OK");
 };
 
-TEST_CASE("It allows to get a value", "[LFU::get]") {
-  LFU lfu(3);
+TEST_CASE("It allows to get a value", "[LFUCache::get]") {
+  LFUCache lfu(3);
 
   lfu.set(1, "a");
   lfu.set(2, "b");
@@ -23,8 +23,8 @@ TEST_CASE("It allows to get a value", "[LFU::get]") {
   REQUIRE(lfu.get(3) == "c");
 };
 
-TEST_CASE("It deletes the least frequently used item", "[LFU]") {
-  LFU lfu(3);
+TEST_CASE("It deletes the least frequently used item", "[LFUCache]") {
+  LFUCache lfu(3);
 
   lfu.set(1, "a");
   lfu.set(2, "b");
