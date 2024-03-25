@@ -57,7 +57,9 @@ void LFUCache::increment(int idx) {
 void LFUCache::insert(int key, string val) {
   if (this->curr_size == this->mx_size) {
     this->store.erase(this->freq[0].first);
-    this->freq[0] = this->freq[this->curr_size - 1];
+    this->curr_size--;
+    this->freq[0] = this->freq[this->curr_size];
+    this->store[this->freq[0].first].second = 0;
     heapify(0);
   }
 
@@ -66,11 +68,14 @@ void LFUCache::insert(int key, string val) {
   this->store[key] = make_pair(val, idx);
   this->curr_size++;
 
-  while (idx > 0 && this->freq[get_parent_idx(idx)].second > this->freq[idx].second) {
-    this->store[this->freq[get_parent_idx(idx)].first].second = idx;
+  int parent_idx = get_parent_idx(idx);
+  while (idx > 0 && this->freq[parent_idx].second > this->freq[idx].second) {
+    this->store[this->freq[parent_idx].first].second = idx;
     this->store[this->freq[idx].first].second = get_parent_idx(idx);
-    swap(this->freq[idx], this->freq[get_parent_idx(idx)]);
-    idx = get_parent_idx(idx);
+    swap(this->freq[idx], this->freq[parent_idx]);
+
+    idx = parent_idx;
+    parent_idx = get_parent_idx(idx);
   }
 }
 
